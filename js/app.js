@@ -12,9 +12,18 @@ function crmDB() {
   //Si se creo bien.
   crmDB.onsuccess = function () {
     console.log('Base de datos creada.');
-  }
+  };
   //Configuracion de la base de datos.
-  crmDB.onupgradeneeded = function () {
-    console.log('Eso solo se ejecuta una vez.');
-  }
+  crmDB.onupgradeneeded = function (e) {
+    const db = e.target.result;
+    const objecStore = db.createObjectStore('crm', {
+      keyPath: 'crm',
+      autoIncrement: true,
+    });
+    //Definir las columnas.
+    objecStore.createIndex('nombre', 'nombre', {unique: false});
+    objecStore.createIndex('email', 'email', {unique: true});
+    objecStore.createIndex('telefono', 'telefono', {unique: false});
+    console.log('Columnas creadas.');
+  };
 };
